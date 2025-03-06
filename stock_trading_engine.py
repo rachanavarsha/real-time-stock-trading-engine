@@ -83,5 +83,20 @@ class StockExchange:
                 print(f"Trade Executed: {trade}")
 
 
+# Simulating Active Trading
+def simulate_trading(stock_exchange, num_orders=100):
+    tickers = [f"TICKER_{i}" for i in range(1024)]
+    for _ in range(num_orders):
+        order_type = random.choice(['BUY', 'SELL'])
+        ticker = random.choice(tickers)
+        quantity = random.randint(1, 100)
+        price = random.uniform(10, 1000)
+        stock_exchange.add_order(order_type, ticker, quantity, price)
+    
+    stock_exchange.process_matching()
+
+if __name__ == "__main__":
+    stock_exchange = StockExchange()
+    simulate_trading(stock_exchange, 200)
 
 
