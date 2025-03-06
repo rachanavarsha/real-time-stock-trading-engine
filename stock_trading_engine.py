@@ -16,3 +16,18 @@ class AtomicInteger:
             self.value.value += 1
         return self.value.value
 
+class Order:
+    def __init__(self, order_id, order_type, ticker, quantity, price):
+        self.order_id = order_id
+        self.order_type = order_type  # 'BUY' or 'SELL'
+        self.ticker = ticker
+        self.quantity = quantity
+        self.price = price
+
+    def __lt__(self, other):
+        if self.order_type == 'BUY':
+            return self.price > other.price  # Highest buy price first
+        else:
+            return self.price < other.price  # Lowest sell price first
+
+
