@@ -64,4 +64,24 @@ class StockOrderBook:
             return trades
 
 
+class StockExchange:
+    def __init__(self):
+        self.order_id_counter = AtomicInteger()
+        self.tickers = [StockOrderBook(f"TICKER_{i}") for i in range(1024)]
+        self.lock = threading.Lock()
+
+    def add_order(self, order_type, ticker_symbol, quantity, price):
+        order_id = self.order_id_counter.increment()
+        ticker_index = int(ticker_symbol.split('_')[-1])
+        order = Order(order_id, order_type, ticker_symbol, quantity, price)
+        self.tickers[ticker_index].add_order(order)
+
+    def process_matching(self):
+        for book in self.tickers:
+            trades = book.match_orders()
+            for trade in trades:
+                print(f"Trade Executed: {trade}")
+
+
+
 
